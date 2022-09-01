@@ -6,38 +6,46 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Entity
-@Table(name = "postagem")
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-public class postagem {
-	
+
+
+    @Entity
+    @Table(name = "postagem")
+
+    public class postagem {
+
 	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	
-	private long id;
-	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
 	@NotNull
 	@Size(min = 5, max = 100)
 	private String titulo;
-	
+
 	@NotNull
 	@Size(min = 10, max = 500)
 	private String texto;
-	
-	@Temporal (TemporalType.TIMESTAMP)	
+
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date date = new java.sql.Date(System.currentTimeMillis());
 
-	public long getId() {
+	@ManyToOne
+	@JsonIgnoreProperties("postagem")
+	private Tema tema;
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -65,4 +73,13 @@ public class postagem {
 		this.date = date;
 	}
 
+	@ManyToOne
+	@JsonIgnoreProperties("postagem")
+	public Tema getTema() {
+		return tema;
+	}
+
+	public void setTema(Tema tema) {
+		this.tema = tema;
+	}
 }
